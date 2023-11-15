@@ -39,10 +39,8 @@ public final class ColumnarRow implements InternalRow, DataSetters, Serializable
     private static final long serialVersionUID = 1L;
 
     private RowKind rowKind = RowKind.INSERT;
-    private VectorizedColumnBatch vectorizedColumnBatch;
-    private int rowId;
-
-    public ColumnarRow() {}
+    private final VectorizedColumnBatch vectorizedColumnBatch;
+    private final int rowId;
 
     public ColumnarRow(VectorizedColumnBatch vectorizedColumnBatch) {
         this(vectorizedColumnBatch, 0);
@@ -50,15 +48,6 @@ public final class ColumnarRow implements InternalRow, DataSetters, Serializable
 
     public ColumnarRow(VectorizedColumnBatch vectorizedColumnBatch, int rowId) {
         this.vectorizedColumnBatch = vectorizedColumnBatch;
-        this.rowId = rowId;
-    }
-
-    public void setVectorizedColumnBatch(VectorizedColumnBatch vectorizedColumnBatch) {
-        this.vectorizedColumnBatch = vectorizedColumnBatch;
-        this.rowId = 0;
-    }
-
-    public void setRowId(int rowId) {
         this.rowId = rowId;
     }
 
@@ -220,5 +209,13 @@ public final class ColumnarRow implements InternalRow, DataSetters, Serializable
     public int hashCode() {
         throw new UnsupportedOperationException(
                 "ColumnarRowData do not support hashCode, please hash fields one by one!");
+    }
+
+    public ColumnarRow copy() {
+        return copy(rowId);
+    }
+
+    public ColumnarRow copy(int rowId) {
+        return new ColumnarRow(vectorizedColumnBatch, rowId);
     }
 }

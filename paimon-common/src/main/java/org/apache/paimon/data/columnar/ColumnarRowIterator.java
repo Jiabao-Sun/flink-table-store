@@ -24,10 +24,7 @@ import org.apache.paimon.utils.RecyclableIterator;
 
 import javax.annotation.Nullable;
 
-/**
- * A {@link RecordReader.RecordIterator} that returns {@link InternalRow}s. The next row is set by
- * {@link ColumnarRow#setRowId}.
- */
+/** A {@link RecordReader.RecordIterator} that returns {@link InternalRow}s. */
 public class ColumnarRowIterator extends RecyclableIterator<InternalRow> {
 
     private final ColumnarRow rowData;
@@ -49,8 +46,7 @@ public class ColumnarRowIterator extends RecyclableIterator<InternalRow> {
     @Override
     public InternalRow next() {
         if (pos < num) {
-            rowData.setRowId(pos++);
-            return rowData;
+            return rowData.copy(pos++);
         } else {
             return null;
         }

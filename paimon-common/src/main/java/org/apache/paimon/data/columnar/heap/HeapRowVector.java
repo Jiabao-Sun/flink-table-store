@@ -40,9 +40,7 @@ public class HeapRowVector extends AbstractHeapVector
 
     @Override
     public ColumnarRow getRow(int i) {
-        ColumnarRow columnarRow = new ColumnarRow(new VectorizedColumnBatch(fields));
-        columnarRow.setRowId(i);
-        return columnarRow;
+        return new ColumnarRow(new VectorizedColumnBatch(fields), i);
     }
 
     @Override
